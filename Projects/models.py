@@ -26,4 +26,19 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
 
+class Project(models.Model):
+    title = models.CharField(max_length = 60)
+    description = models.CharField(max_length = 255)
+    user = models.ForeignKey(User, related_name="projects", on_delete = models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Bug(models.Model):
+    title = models.CharField(max_length=60)
+    description = models.TextField()
+    status = models.CharField(max_length = 45)
+    priority = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 # Create your models here.
