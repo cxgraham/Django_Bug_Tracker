@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration Page</title>
+</head>
+<body>
+
+    <form action="{% url 'Projects:register' %}", method = 'post'>
+        <h1>Create an Account</h1>
+        {% csrf_token %}
+        {% if messages %}
+            <ul class="messages">    
+                {% for message in messages %}    
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        {{ message }}
+                    </li>    
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <label>
+            First Name:
+            <input type="text" name="first_name">
+        </label>
+        <label>
+            Email:
+            <input type="text" name="email">
+        </label>
+        <label>
+            Password:
+            <input type="password" name="password">
+        </label>
+        <label>
+            Confirm Password:
+            <input type="password" name="confirm_password">
+        </label>
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
