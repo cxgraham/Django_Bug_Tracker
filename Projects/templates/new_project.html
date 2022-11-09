@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Project</title>
+    {% include 'navbar.html' %}
+</head>
+<body>
+    <form action="{% url 'Projects:new_project' %}", method = 'post'>
+        <h1>Create a New Project</h1>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">
+                Title: 
+                <input type="text" name="title" class="form-control">
+            </label>
+        </div>
+        <div class="form-floating">
+            <label>
+                Details:
+                <textarea class="form-control" name = "description" placeholder="Explain project details" style="height: 100px"></textarea>
+            </label>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Create Project</button>
+        </div>
+    </form>
+</body>
+</html>

@@ -39,6 +39,7 @@ class Bug(models.Model):
     status = models.CharField(max_length = 45)
     priority = models.IntegerField()
     date = models.DateField(auto_now_add=True)
+    project = models.ForeignKey(Project, related_name = 'bugs', on_delete = models.CASCADE, default = 5)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 # Create your models here.

@@ -1,7 +1,8 @@
+from hashlib import new
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from .models import User
+from .models import User, Project, Bug
 import bcrypt
 
 
@@ -23,10 +24,23 @@ def register(request):
             pw_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
             print(pw_hash)
             created_user = User.objects.create(first_name = request.POST['first_name'], email = email, password = pw_hash)
-            request.session['first_name'] = request.POST['first_name']
+            request.session['first_name'] = created_user.first_name
+            request.session['user_id'] = created_user.id
             created_user.save()
             print(created_user)
-            return redirect('/home')
+            return redirect('/homepage')
+
+def new_project(request):
+    if request.method == 'GET':
+        return render(request, 'new_project.html')
+    if request.method == 'POST':
+        title = request.POST['title']
+        details = request.POST['description']
+        this_user = User.objects.get(id = request.session['user_id'])
+        new_project = Project.objects.create(title = title, description = details, user = this_user)
+        request.session['project'] = new_project
+        new_project.save()
+        return redirect('/homepage')
 
 
 
@@ -36,7 +50,13 @@ def index(request):
     return render(request, 'loginpage.html')
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    this_user = User.objects.get(id = request.session['user_id'])
+    context = {
+        'first_name': this_user.first_name,
+        'projects': this_user.projects.all(),
+    }
+    print(this_user.projects)
+    return render(request, 'homepage.html', context)
 
 def login(request):
     user = User.objects.filter(email=request.POST['email'])
